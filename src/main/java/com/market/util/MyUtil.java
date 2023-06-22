@@ -31,24 +31,29 @@ public class MyUtil {
 		}
 		//이전버튼
 		currentPageSetup = (currentPage / numPerBlock) * numPerBlock;
+		System.out.println("currentPage=" + currentPage);
+		System.out.println("numPerBlock=" + numPerBlock);
+		System.out.println("currentPageSetup=" + currentPageSetup);
+		System.out.println("totalPage=" + totalPage);
 		
 		if(currentPage % numPerBlock == 0) {
 			currentPageSetup = currentPageSetup - numPerBlock;
 		}
 		
 		if(totalPage > numPerBlock && currentPageSetup > 0) {
-			sb.append("<a href=\"" + listUrl + "pageNum=" + currentPageSetup + "\">◀이전</a>&nbsp");
+			sb.append("<li class=\"page-item \"><a class=\"page-link\" href=\"" + listUrl + "pageNum=" + currentPageSetup + "\">&laquo;</a></li>");
 		}
 		
 		//그냥 버튼
 		page = currentPageSetup + 1;
+		System.out.println("page=" + page);
 		
 		while(page <= totalPage && page <= (currentPageSetup + numPerBlock)) {
 			
 			if(page == currentPage) {
-				sb.append("<font color=\"hotpink\">" + page + "</font>&nbsp;");
+				sb.append("<font class=\"page-link\"  style=\"background-color: #0d6efd; color: white;\">" + page + "</font>");
 			} else {
-				sb.append("<a href=\"" + listUrl + "pageNum=" + page + "\">" + page + "</a>&nbsp");
+				sb.append("<a class=\"page-link\" href=\"" + listUrl + "pageNum=" + page + "\">" + page + "</a>");
 				
 			}
 			
@@ -57,7 +62,8 @@ public class MyUtil {
 		
 		//다음버튼
 		if(totalPage - currentPageSetup > numPerBlock) {
-			sb.append("<a href=\"" + listUrl + "pageNum=" + currentPageSetup + "\">다음▶</a>&nbsp");
+			System.out.println(currentPageSetup);
+			sb.append("<li class=\"page-item\"><a class=\"page-link\" href=\"" + listUrl + "pageNum=" + currentPageSetup + "\">&raquo;</a></li>");
 		}
 		
 		//문자열로 리턴

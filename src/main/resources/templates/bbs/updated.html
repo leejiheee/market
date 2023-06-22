@@ -2,11 +2,104 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout1}">
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
 
-</body>
+<th:block layout:fragment="css">
+	<link rel="stylesheet" type="text/css" href="css/list.css" />
+	<link rel="stylesheet" type="text/css" href="css/created.css" />
+</th:block>
+<div layout:fragment="content" id="bbs">
+	<form class=wrap action="/updated_ok" method="post" name="myForm">
+		<div class="mb-3">
+			<label for="exampleFormControlInput1" class="form-label">상품
+				이름</label> <input name="name" type="text" class="form-control"
+				id="exampleFormControlInput1" th:value="${market.name}">
+		</div>
+
+		<div class="mb-3">
+			<label class="form-label">카테고리</label> <select class="form-select"
+				name="category" th:value="${market.category}">
+				<option>카테고리를 선택해주세요.</option>
+				<option value="인형" th:selected="${market.category}=='인형'">인형</option>
+				<option value="의류" th:selected="${market.category}=='의류'">의류</option>
+				<option value="문구" th:selected="${market.category}=='문구'">문구</option>
+				<option value="식품" th:selected="${market.category}=='식품'">식품</option>
+			</select>
+		</div>
+
+		<div class="mb-3">
+			<label class="form-label">상품 이미지</label>
+			<div class="input-group mb-3">
+				<input type="file" name="img" class="form-control"
+					id="inputGroupFile02"> <label class="input-group-text"
+					for="inputGroupFile02">Upload</label>
+			</div>
+		</div>
+		<div class="mb-3">
+			<label for="exampleFormControlInput1" class="form-label">가격</label> <input name="price" type="number" class="form-control"
+				id="exampleFormControlInput1" th:value="${market.price}">
+		</div>
+
+		<div class="mb-3">
+			<label for="exampleFormControlTextarea1" class="form-label">상품
+				상세설명</label>
+			<textarea class="form-control" name="content"
+				id="exampleFormControlTextarea1" rows="15" th:value="${market.content}"></textarea>
+		</div>
+
+		<input type="hidden" name="num" th:value="${market.num}"/>
+		<input type="hidden" name="pageNum" th:value="${pageNum}"/>
+		<input type="hidden" name="searchKey" th:value="${searchKey}"/>
+		<input type="hidden" name="searchValue" th:value="${searchValue}"/>
+
+		<input type="button" class="btn btn-primary" value="등록하기"
+			onclick="sendIt();" />
+
+
+	</form>
+</div>
+
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+		function sendIt() {
+			var f = document.myForm;
+			var str = f.name.value;
+			str = str.trim();
+			
+			if(!str) {
+				alert("상품이름을 입력하세요.");
+				f.name.focus();
+				return;
+			}
+			
+			str = f.category.value;
+			str = str.trim();
+			
+			if(!str) {
+				alert("카테고리를 선택하세요.");
+				f.category.focus();
+				return;
+			}
+			
+			str = f.price.value;
+			str = str.trim();
+			
+			if(!str) {
+				alert("상품 가격을 입력하세요.");
+				f.price.focus();
+				return;
+			}
+			
+			str = f.content.value;
+			str = str.trim();
+			
+			if(!str) {
+				alert("상품설명을 입력하세요.")
+				f.content.focus();
+				return;
+			}
+			
+			f.submit();
+		}
+	</script>
+</th:block>
 </html>

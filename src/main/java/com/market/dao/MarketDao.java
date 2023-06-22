@@ -12,6 +12,13 @@ import com.market.dto.Market;
 
 		public List<Market> getLists(String searchKey, String searchValue, int start, int end) throws Exception;
 		
+		public Market getReadData(int num) throws Exception;
+	
+		public int maxNum() throws Exception;
+		
+		public void insertData(Market market) throws Exception;
+		
+		public void updateData(Market market) throws Exception;
 	}
 	
 	

@@ -24,6 +24,32 @@ public class MarketServiceImpl implements MarketService{
 	public int getDataCount(String searchKey, String searchValue) throws Exception {
 		return marketMapper.getDataCount(searchKey, searchValue);
 	}
+
+
+	@Override
+	public Market getReadData(int num) throws Exception {
+		return marketMapper.getReadData(num);
+	}
+
+
+	@Override
+	public int maxNum() throws Exception {
+		return marketMapper.maxNum();
+	}
+
+
+	@Override
+	public void insertData(Market market) throws Exception {
+		marketMapper.insertData(market);
+		
+	}
+
+
+	@Override
+	public void updateData(Market market) throws Exception {
+		marketMapper.updateData(market);
+	}
+
 	
 
 }

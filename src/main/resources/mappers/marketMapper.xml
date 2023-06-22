@@ -15,7 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getLists" parameterType="map" resultType="Market">
 		select * from(
 		select rownum rnum, data.* from(
-				select num, name, img, category, price, hitCount, good
+				select num, name, img, category, price, good
 				from market where ${searchKey} like '%' || #{searchValue} || '%'
 				order by num desc
 				) data
@@ -26,4 +26,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			]]>
 			
 	</select>
+	
+	<select id="getReadData" parameterType="int" resultType="Market">
+		select * from market where num = #{num}
+	</select>
+	
+	<insert id="insertData" parameterType="Market">
+		insert into market values(#{num}, #{name}, '/img/준비중.jpg', #{content}, #{category}, #{price}, '0')
+	</insert>
 </mapper>

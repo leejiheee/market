@@ -38,6 +38,30 @@ public class MarketController {
 		return "/index";
 	}
 	
+	@RequestMapping(value="/created")
+	public String created() {
+		return "bbs/created";
+	}
+	
+	@RequestMapping(value="/created", method = RequestMethod.POST)
+	public String createdOK(Market market, HttpServletRequest request, Model model) {
+		
+		try {
+			int maxNum = marketService.maxNum();
+			
+			market.setNum(maxNum + 1);
+			
+			marketService.insertData(market);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+
+		return "redirect:/list";
+	}
+	
+	//리스트
 	@RequestMapping(value="/list", method= {RequestMethod.GET, RequestMethod.POST})
 	public String list(Market market, HttpServletRequest request, Model model) {
 		
@@ -116,10 +140,112 @@ public class MarketController {
 		return "bbs/list";
 	}
 	
+	@RequestMapping(value= "/article", method = RequestMethod.GET)
+	public String article(HttpServletRequest request, Model model) {
+		
+		try {
+			int num = Integer.parseInt(request.getParameter("num"));
+			String pageNum = request.getParameter("PageNum");
+			String searchKey = request.getParameter("searchKey");
+			String searchValue = request.getParameter("searchValue");
+			
+			if(searchValue != null) {
+				searchValue = URLDecoder.decode(searchValue, "UTF-8");
+			}
+			
+			
+			Market market = marketService.getReadData(num);
+			
+			if(market == null) {
+				return "redirect:/list?pageNum=" + pageNum;
+			}
+			
+			String param = "pageNum=" + pageNum;
+			
+			if(searchValue != null && !searchValue.equals("")) {
+				param += "&searchKey=" + searchKey;
+				param += "&searchValue=" + URLEncoder.encode(searchValue, "UTF-8");
+			}
+			
+			model.addAttribute("market", market);
+			model.addAttribute("param", param);
+			model.addAttribute("pageNum", pageNum);			
+			
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		
+		
+		return "bbs/article";
+	}
 	
+	//수정화면 보여줌
+	@RequestMapping(value="/updated", method= RequestMethod.GET)
+	public String updated(HttpServletRequest request, Model model) {
+		
+		try {
+			int num = Integer.parseInt(request.getParameter("num"));
+			String pageNum = request.getParameter("pageNum");
+			String searchKey = request.getParameter("searchKey");
+			String searchValue = request.getParameter("searchValue");
+			
+			if(searchValue != null) {
+				searchValue = URLDecoder.decode(searchValue, "UTF-8");
+			}
+			
+			Market market = marketService.getReadData(num);
+			
+			if(market == null) {
+				return "redirect:/list?pageNum" + pageNum;
+			}
+			
+			String param = "pageNum=" + pageNum;
+			
+			if(searchValue != null && !searchValue.equals("")) {
+				param = "searchKey=" + searchKey;
+				param += "&searchValue=" + URLEncoder.encode(searchValue, "UTF-8");
+			}
+			
+			model.addAttribute("market", market);
+			model.addAttribute("pageNum", pageNum);
+			model.addAttribute("param", param);
+			model.addAttribute("searchKey", searchKey);
+			model.addAttribute("searchValue", searchValue);
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "bbs/updated";
+	}
 	
-	
-	
-	
+	@RequestMapping(value="/updated_ok", method = RequestMethod.POST)
+	public String updatedOK(Market market, HttpServletRequest request, Model model) {
+		String pageNum = request.getParameter("pageNum");
+		String searchKey = request.getParameter("searchKey");
+		String searchValue = request.getParameter("searchValue");
+		String param = "?pageNum=" + pageNum;
+		
+		try {
+			
+			market.setContent(market.getContent().replace("<br/>", "\r\n"));
+			marketService.updateData(market);
+			
+			if(searchValue != null && !searchValue.equals("")) {
+				param += "&searchKey=" + searchKey;
+				param += "searchValue=" + URLEncoder.encode(searchValue, "UTF-8");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		
+		return "redirect:/list" + param;
+	}
 	
 }
