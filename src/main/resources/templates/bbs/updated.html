@@ -18,11 +18,10 @@
 		<div class="mb-3">
 			<label class="form-label">카테고리</label> <select class="form-select"
 				name="category" th:value="${market.category}">
-				<option>카테고리를 선택해주세요.</option>
-				<option value="인형" th:selected="${market.category}=='인형'">인형</option>
-				<option value="의류" th:selected="${market.category}=='의류'">의류</option>
-				<option value="문구" th:selected="${market.category}=='문구'">문구</option>
-				<option value="식품" th:selected="${market.category}=='식품'">식품</option>
+				<option value="1" th:selected="${market.category}=='인형'">인형</option>
+				<option value="2" th:selected="${market.category}=='의류'">의류</option>
+				<option value="3" th:selected="${market.category}=='문구'">문구</option>
+				<option value="4" th:selected="${market.category}=='식품'">식품</option>
 			</select>
 		</div>
 
@@ -43,7 +42,7 @@
 			<label for="exampleFormControlTextarea1" class="form-label">상품
 				상세설명</label>
 			<textarea class="form-control" name="content"
-				id="exampleFormControlTextarea1" rows="15" th:value="${market.content}"></textarea>
+				id="exampleFormControlTextarea1" rows="15" th:value="${market.content}" th:text=${market.content}></textarea>
 		</div>
 
 		<input type="hidden" name="num" th:value="${market.num}"/>

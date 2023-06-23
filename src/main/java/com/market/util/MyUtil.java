@@ -31,10 +31,6 @@ public class MyUtil {
 		}
 		//이전버튼
 		currentPageSetup = (currentPage / numPerBlock) * numPerBlock;
-		System.out.println("currentPage=" + currentPage);
-		System.out.println("numPerBlock=" + numPerBlock);
-		System.out.println("currentPageSetup=" + currentPageSetup);
-		System.out.println("totalPage=" + totalPage);
 		
 		if(currentPage % numPerBlock == 0) {
 			currentPageSetup = currentPageSetup - numPerBlock;
@@ -62,8 +58,7 @@ public class MyUtil {
 		
 		//다음버튼
 		if(totalPage - currentPageSetup > numPerBlock) {
-			System.out.println(currentPageSetup);
-			sb.append("<li class=\"page-item\"><a class=\"page-link\" href=\"" + listUrl + "pageNum=" + currentPageSetup + "\">&raquo;</a></li>");
+			sb.append("<li class=\"page-item\"><a class=\"page-link\" href=\"" + listUrl + "pageNum=" + page + "\">&raquo;</a></li>");
 		}
 		
 		//문자열로 리턴

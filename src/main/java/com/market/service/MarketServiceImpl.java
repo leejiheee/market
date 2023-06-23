@@ -50,6 +50,20 @@ public class MarketServiceImpl implements MarketService{
 		marketMapper.updateData(market);
 	}
 
+
+	@Override
+	public void deleteData(int num) throws Exception {
+		marketMapper.deleteData(num);
+		
+	}
+
+
+	@Override
+	public int updateGood() throws Exception {
+		return marketMapper.updateGood();
+	}
+
+	
 	
 
 }

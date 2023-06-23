@@ -15,7 +15,14 @@
 						alt="..." />
 				</div>
 				<div class="col-md-6">
-					<div class="small mb-1" th:text="${market.category}"></div>
+					<div style="display: flex;">
+							<button id="countBtn" onclick="chkGood(${market.good});"
+								style="display: flex; justify-content: right; margin-left: 500px; margin-bottom: 50px; border: 0; background-color: transparent;">
+								<img alt="#" src="/img/빈하트.png" width="25px" height="25px">
+							</button>
+
+						<p th:text="${market.good}"></p>
+					</div>
 					<h1 class="display-5 fw-bolder" th:text="${market.name}"></h1>
 					<div class="fs-5 mb-5">
 						<span th:text="${market.price} + '원'"></span>
@@ -23,11 +30,12 @@
 					<p class="lead" th:text="${market.content}"></p>
 					<div class="d-flex">
 
-						<input type="button" class="btn btn-outline-dark flex-shrink-0" value="수정하기"
-							th:onclick="|location.href='updated?num=@{${market.num}}&@{${params}}'|"  />
-							&nbsp;&nbsp;
-						<input type="button" class="btn btn-outline-dark flex-shrink-0" value="삭제하기"
-							/>
+						<input type="button" class="btn btn-outline-dark flex-shrink-0"
+							value="수정하기"
+							th:onclick="|location.href='updated?num=@{${market.num}}&@{${params}}'|" />
+						&nbsp;&nbsp; <input type="button"
+							class="btn btn-outline-dark flex-shrink-0" value="삭제하기"
+							th:onclick="|location.href='deleted_ok?num=@{${market.num}}&@{${params}}'|" />
 					</div>
 				</div>
 			</div>

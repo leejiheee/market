@@ -22,8 +22,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 
 
-@MultipartConfig(maxFileSize = 1024 * 1024 * 2, location = "c:/Temp/img")
-
 @Controller
 public class MarketController {
 	//의존성 주입
@@ -120,8 +118,6 @@ public class MarketController {
 			if(!param.equals("")) {
 				articleUrl += "&" + param;
 			}
-			
-
 
 			
 			model.addAttribute("lists", lists);
@@ -133,9 +129,7 @@ public class MarketController {
 			e.printStackTrace();
 
 		}
-		
-		
-		
+
 		
 		return "bbs/list";
 	}
@@ -145,7 +139,7 @@ public class MarketController {
 		
 		try {
 			int num = Integer.parseInt(request.getParameter("num"));
-			String pageNum = request.getParameter("PageNum");
+			String pageNum = request.getParameter("pageNum");
 			String searchKey = request.getParameter("searchKey");
 			String searchValue = request.getParameter("searchValue");
 			
@@ -168,7 +162,7 @@ public class MarketController {
 			}
 			
 			model.addAttribute("market", market);
-			model.addAttribute("param", param);
+			model.addAttribute("params", param);
 			model.addAttribute("pageNum", pageNum);			
 			
 			
@@ -181,6 +175,25 @@ public class MarketController {
 		
 		return "bbs/article";
 	}
+	
+	@RequestMapping(value="/countBtn", method= RequestMethod.GET)
+	public String getLikes(Market market, HttpServletRequest request, Model model) {
+		String pageNum = request.getParameter("pageNum");
+		String param = "?pageNum=" + pageNum;		
+		
+		try {
+			int goodNum = Integer.parseInt(request.getParameter("num"));
+			marketService.updateGood(); //관심수 증가
+			market.setGood(goodNum + 1);
+			marketService.insertData(market);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/article" + param;
+	}
+	
 	
 	//수정화면 보여줌
 	@RequestMapping(value="/updated", method= RequestMethod.GET)
@@ -199,7 +212,7 @@ public class MarketController {
 			Market market = marketService.getReadData(num);
 			
 			if(market == null) {
-				return "redirect:/list?pageNum" + pageNum;
+				return "redirect:/list?pageNum=" + pageNum;
 			}
 			
 			String param = "pageNum=" + pageNum;
@@ -237,8 +250,9 @@ public class MarketController {
 			
 			if(searchValue != null && !searchValue.equals("")) {
 				param += "&searchKey=" + searchKey;
-				param += "searchValue=" + URLEncoder.encode(searchValue, "UTF-8");
+				param += "&searchValue=" + URLEncoder.encode(searchValue, "UTF-8");
 			}
+		
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -246,6 +260,31 @@ public class MarketController {
 		}
 		
 		return "redirect:/list" + param;
+	}
+	
+	@RequestMapping(value="/deleted_ok", method= {RequestMethod.GET})
+	public String deleteOK(HttpServletRequest request, Model model) {
+		int num = Integer.parseInt(request.getParameter("num"));
+		String pageNum = request.getParameter("pageNum");
+		String searchKey = request.getParameter("searchKey");
+		String searchValue = request.getParameter("searchValue");
+		String param = "?pageNum=" + pageNum;
+		
+		try {
+			System.out.println(num);
+			marketService.deleteData(num);
+			
+			if(searchValue != null && !searchValue.equals("")) {
+				param += "&searchKey=" + searchKey;
+				param += "&searchValue=" + URLEncoder.encode(searchValue, "UTF-8");
+			}
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/list" + param;
+		
 	}
 	
 }

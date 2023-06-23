@@ -19,6 +19,10 @@ import com.market.dto.Market;
 		public void insertData(Market market) throws Exception;
 		
 		public void updateData(Market market) throws Exception;
+		
+		public void deleteData(int num) throws Exception;
+		
+		public int updateGood() throws Exception;
 	}
 	
 	

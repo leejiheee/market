@@ -10,7 +10,7 @@ public class Market {
 	private String name;
 	private String img;
 	private String content;
-	private String category;
+	private int category;
 	private int price;
 	private int hitCount;
 	private int good;
