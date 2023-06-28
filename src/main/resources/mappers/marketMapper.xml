@@ -11,10 +11,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getDataCount" parameterType="map" resultType="int">
 	select nvl(count(*), 0) from market where ${searchKey} like '%' || #{searchValue} || '%'
 	</select>
-	
-	<update id="updateGood" parameterType="int">
-		update market set good = good + 1 where num = #{num}
-	</update>
 
 	<select id="getLists" parameterType="map" resultType="Market">
 		select * from(

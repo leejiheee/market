@@ -19,6 +19,23 @@
 			</div>
 		</div>
 	</div>
+	<form action="/list" method="post" name="searchForm">
+		<div class="input-group mb-3"
+			style="width: 500px; height: 40px; margin: 50px auto 0 auto;">
+			<select name="searchKey" class="form-select"
+				aria-label="Default select example" style="width: 150px;">
+				<option selected value="name">상품이름</option>
+				<option value="category">카테고리</option>
+			</select> <input type="text" name="searchValue" class="form-control"
+				style="width: 250px;" aria-label="Text input with dropdown button"
+				placeholder="검색어를 입력하세요."> <input type="button"
+				class="btn btn-dark" style="width: 100px;" value="검 색"
+				onclick="sendIt();">
+		</div>
+	</form>
+	<div style="display: flex; justify-content: center;"><a href="/list"><button type="button" class="btn btn-outline-dark">상품 전체보기</button></a></div>
+	
+	
 	<!-- Section-->
 	<section class="py-5">
 		<div class="container px-4 px-lg-5 mt-5">
@@ -37,6 +54,7 @@
 								<h5 th:text="${market.name}" class="fw-bolder"></h5>
 								<!-- Product price-->
 								<p th:text="${market.price} + '원'"></p>
+								<p th:text="${market.category}" style="font-size: 15px; color: gray;"></p>
 							</div>
 						</div>
 						<!-- Product actions-->
@@ -57,7 +75,7 @@
 					style="display: flex; justify-content: center;">
 					<li th:utext="${pageIndexList}" class="page-item"
 						style="display: flex;"></li>
-				</ul> 
+				</ul>
 
 			</div>
 		</div>
@@ -73,16 +91,8 @@
 	<th:block layout:fragment="script">
 		<script th:inline="javascript">
 			function sendIt() {
-				var f = document.searchFrom;
-				var str = f.searchValue.value;
-				str = str.trim();
-
-				if (!str) {
-					alert("검색어를 입력하세요.");
-					f.searchValue.focus();
-					return;
-				}
-
+				var f = document.searchForm;
+				f.action = "/list";
 				f.submit();
 			}
 		</script>
