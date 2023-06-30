@@ -1,5 +1,6 @@
 package com.market.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
@@ -53,6 +54,8 @@ public class MarketController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			model.addAttribute("errorMessage", "글 작성중 에러가 발생했습니다.");
+			return "bbs/created";
 
 		}
 
@@ -62,7 +65,6 @@ public class MarketController {
 	//리스트
 	@RequestMapping(value="/list", method= {RequestMethod.GET, RequestMethod.POST})
 	public String list(Market market, HttpServletRequest request, Model model) {
-		
 		
 		try {
 			
@@ -127,6 +129,7 @@ public class MarketController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			model.addAttribute("errorMessage", "리스트를 불러오는 중 에러가 발생했습니다.");
 
 		}
 
@@ -169,6 +172,7 @@ public class MarketController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			model.addAttribute("errorMessage", "게시글을 불러오는 중 에러가 발생했습니다.");
 
 		}
 		
@@ -176,30 +180,11 @@ public class MarketController {
 		return "bbs/article";
 	}
 	
-	@RequestMapping(value="/countBtn", method= RequestMethod.GET)
-	public String getLikes(Market market, HttpServletRequest request, Model model) {
-		String pageNum = request.getParameter("pageNum");
-		String param = "?pageNum=" + pageNum;		
-		
-		try {
-			int goodNum = Integer.parseInt(request.getParameter("num"));
-			marketService.updateGood(); //관심수 증가
-			market.setGood(goodNum + 1);
-			marketService.insertData(market);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return "redirect:/article" + param;
-	}
-	
 	
 	//수정화면 보여줌
 	@RequestMapping(value="/updated", method= RequestMethod.GET)
-	public String updated(HttpServletRequest request, Model model) {
+	public String updated(HttpServletRequest request, Model model) throws Exception {
 		
-		try {
 			int num = Integer.parseInt(request.getParameter("num"));
 			String pageNum = request.getParameter("pageNum");
 			String searchKey = request.getParameter("searchKey");
@@ -228,10 +213,6 @@ public class MarketController {
 			model.addAttribute("searchKey", searchKey);
 			model.addAttribute("searchValue", searchValue);
 			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		return "bbs/updated";
 	}
@@ -244,7 +225,6 @@ public class MarketController {
 		String param = "?pageNum=" + pageNum;
 		
 		try {
-			
 			market.setContent(market.getContent().replace("<br/>", "\r\n"));
 			marketService.updateData(market);
 			
@@ -256,6 +236,12 @@ public class MarketController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			try {
+				param += "&errorMessage=" + URLEncoder.encode("게시글을 수정 중 에러가 발생했습니다.", "UTF-8");
+			} catch (UnsupportedEncodingException e1) {
+				e1.printStackTrace();
+			}
+
 
 		}
 		
@@ -281,6 +267,12 @@ public class MarketController {
 		
 		} catch (Exception e) {
 			e.printStackTrace();
+			try {
+				param += "&errorMessage=" + URLEncoder.encode("게시글을 삭제 중 에러가 발생했습니다.", "UTF-8");
+			} catch (UnsupportedEncodingException e1) {
+				e1.printStackTrace();
+			}
+
 		}
 		
 		return "redirect:/list" + param;
